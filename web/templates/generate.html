@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Контент-план · AI-генератор контента{% endblock %}
+{% block content %}
+  <h1 class="text-3xl font-bold">Создать контент-план</h1>
+  <p class="mt-2 text-slate-600">
+    OpenAI создаёт по одному черновику на день. В автономном режиме создаются пять черновиков разных форматов.
+  </p>
+  <form method="post" action="{{ url_for('generate') }}"
+        class="mt-6 max-w-lg space-y-4 rounded-xl border border-slate-200 bg-white p-5">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="flex flex-col gap-1">
+      Ниша
+      <input name="niche" maxlength="200" value="{{ request.form.get('niche', '') }}"
+             class="rounded-lg border border-slate-300 px-3 py-2" required>
+    </label>
+    <label class="flex flex-col gap-1">
+      Тон голоса
+      <input name="tone" maxlength="200" value="{{ request.form.get('tone', '') }}"
+             class="rounded-lg border border-slate-300 px-3 py-2" placeholder="Дружелюбный, экспертный" required>
+    </label>
+    <label class="flex flex-col gap-1">
+      Количество дней
+      <input name="days" type="number" min="1" max="{{ max_days }}" value="{{ request.form.get('days', '7') }}"
+             class="rounded-lg border border-slate-300 px-3 py-2" required>
+    </label>
+    <label class="flex flex-col gap-1">
+      Площадка
+      <select name="platform" class="rounded-lg border border-slate-300 px-3 py-2">
+        {% for value, label in platforms.items() %}
+          <option value="{{ value }}"{% if request.form.get('platform') == value %} selected{% endif %}>
+            {{ label }}
+          </option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit" class="rounded-lg bg-indigo-700 px-4 py-2 font-medium text-white">
+      Сгенерировать план
+    </button>
+  </form>
+{% endblock %}

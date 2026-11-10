@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}AI-генератор контента{% endblock %}</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+  <header class="border-b border-slate-200 bg-white">
+    <nav class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-5 py-4">
+      <a href="{{ url_for('index') }}" class="font-semibold">AI-генератор контента</a>
+      <a href="{{ url_for('generate') }}" class="text-indigo-700 hover:underline">Создать контент-план</a>
+    </nav>
+  </header>
+  <main class="mx-auto max-w-5xl px-5 py-8">
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+      <p role="{{ 'alert' if category == 'error' else 'status' }}"
+         class="mb-4 rounded-lg px-4 py-3 {{ 'bg-red-50 text-red-800' if category == 'error' else 'bg-emerald-50 text-emerald-800' }}">
+        {{ message }}
+      </p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
